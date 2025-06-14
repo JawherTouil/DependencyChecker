@@ -1,196 +1,156 @@
-Dependency Checker
+Here’s an improved and professional version of your `README.md` — it’s clearer, better formatted, and easier to scan:
 
-A powerful CLI tool to analyze and optimize Node.js project dependencies. It helps you identify unused, missing, outdated, and duplicate dependencies, as well as security vulnerabilities, and provides automated fixes to keep your project healthy.
+---
 
-Features
+# 🧩 Dependency Checker
 
+**A powerful CLI tool to analyze and optimize your Node.js dependencies.**
+Easily detect unused, missing, outdated, and duplicate dependencies, scan for security vulnerabilities, and apply automated fixes to keep your project healthy and efficient.
 
+---
 
+## ✨ Features
 
+* 🔍 **Unused Dependencies** – Identify packages in `package.json` that are not used in your codebase.
+* ❓ **Missing Dependencies** – Detect imports or requires that aren’t listed in `package.json`.
+* ⬆️ **Outdated Dependencies** – Find packages that can be updated to newer versions.
+* 🔐 **Security Vulnerabilities** – Scan for known issues using `npm audit`.
+* 🧬 **Duplicate Packages** – Highlight multiple versions of the same dependency.
+* 📊 **Health Score** – Calculate an overall dependency health score (0–100).
+* 🛠️ **Automated Fixes** – Apply safe fixes: remove unused, update outdated, deduplicate, and patch vulnerabilities.
 
-Unused Dependencies: Detects dependencies not used in your codebase.
+---
 
+## 📦 Installation
 
+### Global (recommended)
 
-Missing Dependencies: Identifies required dependencies not listed in package.json.
-
-
-
-Outdated Dependencies: Checks for outdated packages and suggests updates.
-
-
-
-Security Vulnerabilities: Scans for known vulnerabilities using npm audit.
-
-
-
-Duplicate Packages: Finds duplicate package versions in your dependency tree.
-
-
-
-Health Score: Calculates a dependency health score based on identified issues.
-
-
-
-Automated Fixes: Provides commands to remove unused dependencies, update outdated packages, fix vulnerabilities, and deduplicate packages.
-
-Installation
-
-Install dependency-checker globally to use it in any project:
-
+```bash
 npm install -g dependency-checker
+```
 
-Or install it locally as a development dependency in your project:
+### Local (dev dependency)
 
+```bash
 npm install --save-dev dependency-checker
+```
 
-Usage
+---
 
-Run dependency-checker commands from the root of your Node.js project (where package.json is located).
+## 🚀 Usage
 
-Commands
+Run commands from the root of your project (where `package.json` exists).
 
+### 🔍 Summary
 
-
-
-
-summary: Displays a comprehensive analysis of your project's dependencies.
-
+```bash
 dependency-checker summary
+```
 
-Use the --json flag to output results in JSON format:
+Output in JSON format:
 
+```bash
 dependency-checker summary --json
+```
 
+### 🛠 Fix Issues
 
-
-fix: Automatically fixes dependency issues. Specify what to fix or use --all.
-
+```bash
 dependency-checker fix --outdated --yes
+```
 
-Options:
+Available fix options:
 
+* `--unused` – Remove unused packages
+* `--outdated` – Update outdated packages
+* `--vulnerabilities` – Fix known vulnerabilities
+* `--duplicates` – Deduplicate packages
+* `--all` – Apply all fixes
+* `--force` – Force removal of protected packages
+* `-y, --yes` – Skip confirmation prompts
 
+### 📦 Unused Dependencies
 
-
-
---unused: Remove unused dependencies.
-
-
-
---outdated: Update outdated dependencies.
-
-
-
---vulnerabilities: Fix security vulnerabilities.
-
-
-
---duplicates: Deduplicate packages.
-
-
-
---all: Fix all issues.
-
-
-
---force: Remove protected packages (use with caution).
-
-
-
--y, --yes: Skip confirmation prompts.
-
-
-
-unused: Checks for unused dependencies.
-
+```bash
 dependency-checker unused
+```
 
+### ⬆️ Outdated Packages
 
-
-outdated: Checks for outdated dependencies.
-
+```bash
 dependency-checker outdated
+```
 
+### 📈 Health Score
 
-
-score: Calculates a dependency health score (0-100).
-
+```bash
 dependency-checker score
+```
 
-Example Workflow
+---
 
+## 🧪 Example Workflow
 
+### Step 1 – Check your project
 
-
-
-Check the status of your dependencies:
-
+```bash
 dependency-checker summary
+```
 
-Output example:
+**Example Output:**
 
+```
 📊 Comprehensive Dependency Analysis
 
-🚀 Project Overview:
-  Name: my-project v1.0.0
-  Dependencies: 4 production + 2 development
-  Scripts: 3 npm scripts
-  Node engines: ⚪ Not specified
+🚀 Project: my-project v1.0.0
+Dependencies: 4 prod / 2 dev
+Scripts: 3 npm scripts
+Node engines: ⚪ Not specified
 
-🔍 Unused Dependencies:
-  ✅ All dependencies are being used
+🔍 Unused Dependencies: ✅ All good  
+🔗 Missing Dependencies: ✅ All installed  
+📦 Outdated: ❌ chalk: 4.1.2 → 5.4.1  
+🔒 Vulnerabilities: ✅ None  
+🔁 Duplicates: ✅ None  
 
-🔗 Missing Dependencies:
-  ✅ All required dependencies are installed
+💡 Suggestions:
+• Run "dependency-checker fix --outdated" to update
+• Run "dependency-checker fix --all" to fix everything
+```
 
-📦 Outdated Dependencies:
-  ❌ 1 outdated packages
-    chalk: 4.1.2 → 5.4.1
+### Step 2 – Apply fixes
 
-🔒 Security Vulnerabilities:
-  ✅ No known security vulnerabilities
-
-🔄 Package Duplicates:
-  ✅ No duplicate package versions
-
-💡 Quick Fix Suggestions:
-  • Run "dependency-checker fix --outdated" to update packages
-
-🚀 Run "dependency-checker fix --all" to fix all issues automatically!
-
-
-
-Fix outdated dependencies:
-
+```bash
 dependency-checker fix --outdated --yes
+```
 
+### Step 3 – Re-check
 
-
-Verify the fixes:
-
+```bash
 dependency-checker summary
+```
 
-Notes
+---
 
+## 📌 Notes
 
+* **Chalk Version** – Uses `chalk@4.1.2` for CommonJS compatibility. `chalk@5.x` is ES Module-only and not currently supported.
+* **Protected Packages** – Critical packages (e.g., `react`, `eslint`, `typescript`) are protected from removal unless `--force` is used.
+* **Requirements** – Node.js v14 or higher. Must be run in a directory with a valid `package.json`.
 
+---
 
+## 🤝 Contributing
 
-Chalk Version: This tool uses chalk@4.1.2 for CommonJS compatibility. Upgrading to chalk@5.x is not supported due to its ES Module format.
+Contributions are welcome!
+Feel free to open an issue or submit a PR on the [GitHub repository](https://github.com/your-username/dependency-checker).
 
+---
 
+## 📄 License
 
-Protected Packages: Certain critical packages (e.g., react, typescript, eslint) are protected from removal to prevent accidental breaking changes. Use the --force flag to override (at your own risk).
+Licensed under the [ISC License](./LICENSE).
 
+---
 
-
-Requirements: Node.js v14 or higher is recommended. Ensure you have a package.json file in your project directory.
-
-Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request on the GitHub repository.
-
-License
-
-This project is licensed under the ISC License. See the LICENSE file for details.
+Would you like me to generate a Markdown file version or auto-push it to GitHub if your repo is linked?
