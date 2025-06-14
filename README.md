@@ -26,13 +26,13 @@ Easily detect unused, missing, outdated, and duplicate dependencies, scan for se
 ### Global (recommended)
 
 ```bash
-npm install -g dependency-checker
+npm install -g dependency-cli
 ```
 
 ### Local (dev dependency)
 
 ```bash
-npm install --save-dev dependency-checker
+npm install --save-dev dependency-cli
 ```
 
 ---
@@ -44,19 +44,19 @@ Run commands from the root of your project (where `package.json` exists).
 ### 🔍 Summary
 
 ```bash
-dependency-checker summary
+dependency-cli summary
 ```
 
 Output in JSON format:
 
 ```bash
-dependency-checker summary --json
+dependency-cli summary --json
 ```
 
 ### 🛠 Fix Issues
 
 ```bash
-dependency-checker fix --outdated --yes
+dependency-cli fix --outdated --yes
 ```
 
 Available fix options:
@@ -72,19 +72,19 @@ Available fix options:
 ### 📦 Unused Dependencies
 
 ```bash
-dependency-checker unused
+dependency-cli unused
 ```
 
 ### ⬆️ Outdated Packages
 
 ```bash
-dependency-checker outdated
+dependency-cli outdated
 ```
 
 ### 📈 Health Score
 
 ```bash
-dependency-checker score
+dependency-cli score
 ```
 
 ---
@@ -94,7 +94,7 @@ dependency-checker score
 ### Step 1 – Check your project
 
 ```bash
-dependency-checker summary
+dependency-cli summary
 ```
 
 **Example Output:**
@@ -114,20 +114,20 @@ Node engines: ⚪ Not specified
 🔁 Duplicates: ✅ None  
 
 💡 Suggestions:
-• Run "dependency-checker fix --outdated" to update
-• Run "dependency-checker fix --all" to fix everything
+• Run "dependency-cli fix --outdated" to update
+• Run "dependency-cli fix --all" to fix everything
 ```
 
 ### Step 2 – Apply fixes
 
 ```bash
-dependency-checker fix --outdated --yes
+dependency-cli fix --outdated --yes
 ```
 
 ### Step 3 – Re-check
 
 ```bash
-dependency-checker summary
+dependency-cli summary
 ```
 
 ---
@@ -143,7 +143,7 @@ dependency-checker summary
 ## 🤝 Contributing
 
 Contributions are welcome!
-Feel free to open an issue or submit a PR on the [GitHub repository](https://github.com/your-username/dependency-checker).
+Feel free to open an issue or submit a PR on the [GitHub repository](https://github.com/your-username/dependency-cli).
 
 ---
 

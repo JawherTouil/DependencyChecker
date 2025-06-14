@@ -237,7 +237,7 @@ class DependencyChecker {
       const penalty = Math.min(30, stats.unused.total * 3);
       score -= penalty;
       issues.push(`${stats.unused.total} unused dependencies`);
-      suggestions.push('Run "dependency-checker fix --unused" to remove unused packages');
+      suggestions.push('Run "dependency-cli fix --unused" to remove unused packages');
     }
 
     // Outdated dependencies (max -25 points)
@@ -245,7 +245,7 @@ class DependencyChecker {
       const penalty = Math.min(25, stats.outdated.total * 2);
       score -= penalty;
       issues.push(`${stats.outdated.total} outdated dependencies`);
-      suggestions.push('Run "dependency-checker fix --outdated" to update packages');
+      suggestions.push('Run "dependency-cli fix --outdated" to update packages');
     }
 
     // Security vulnerabilities (max -35 points)
@@ -253,7 +253,7 @@ class DependencyChecker {
       const penalty = Math.min(35, stats.vulnerabilities.total * 5);
       score -= penalty;
       issues.push(`${stats.vulnerabilities.total} security vulnerabilities`);
-      suggestions.push('Run "dependency-checker fix --vulnerabilities" to fix security issues');
+      suggestions.push('Run "dependency-cli fix --vulnerabilities" to fix security issues');
     }
 
     // Duplicate packages (max -15 points)
@@ -261,7 +261,7 @@ class DependencyChecker {
       const penalty = Math.min(15, stats.duplicates.total * 2);
       score -= penalty;
       issues.push(`${stats.duplicates.total} duplicate packages`);
-      suggestions.push('Run "dependency-checker fix --duplicates" to dedupe packages');
+      suggestions.push('Run "dependency-cli fix --duplicates" to dedupe packages');
     }
 
     // Missing dependencies (max -20 points)
@@ -384,7 +384,7 @@ const program = new Command();
 const checker = new DependencyChecker();
 
 program
-  .name('dependency-checker')
+  .name('dependency-cli')
   .description('Advanced dependency management and optimization tool')
   .version('1.0.0');
 
@@ -486,7 +486,7 @@ program
       suggestions.forEach(suggestion => {
         console.log(`  • ${suggestion}`);
       });
-      console.log(chalk.cyan('\n🚀 Run "dependency-checker fix --all" to fix all issues automatically!'));
+      console.log(chalk.cyan('\n🚀 Run "dependency-cli fix --all" to fix all issues automatically!'));
     }
   });
 
@@ -543,7 +543,7 @@ program
     });
 
     console.log(chalk.cyan('\n🎉 Fixes completed!'));
-    console.log(chalk.gray('💡 Run "dependency-checker summary" to see updated status.'));
+    console.log(chalk.gray('💡 Run "dependency-cli summary" to see updated status.'));
   });
 
 // Keep the existing individual commands but make them simpler
@@ -559,7 +559,7 @@ program
       console.log(chalk.green('✅ No unused dependencies found.'));
     } else {
       console.log(chalk.red(`❌ Found ${total} unused dependencies`));
-      console.log(chalk.cyan('💡 Run "dependency-checker fix --unused --yes" to remove them.'));
+      console.log(chalk.cyan('💡 Run "dependency-cli fix --unused --yes" to remove them.'));
     }
   });
 
@@ -571,7 +571,7 @@ program
     try {
       execSync('npm outdated', { stdio: 'inherit' });
     } catch {
-      console.log(chalk.cyan('💡 Run "dependency-checker fix --outdated --yes" to update them.'));
+      console.log(chalk.cyan('💡 Run "dependency-cli fix --outdated --yes" to update them.'));
     }
   });
 
