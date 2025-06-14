@@ -102,7 +102,7 @@ dependency-cli summary
 ```
 📊 Comprehensive Dependency Analysis
 
-🚀 Project: my-project v1.0.0
+🚀 Project: my-project v1.0.1
 Dependencies: 4 prod / 2 dev
 Scripts: 3 npm scripts
 Node engines: ⚪ Not specified

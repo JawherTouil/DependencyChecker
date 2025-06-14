@@ -18,8 +18,26 @@ class DependencyChecker {
         '*.jsx': depcheck.parser.jsx,
         '*.ts': depcheck.parser.typescript,
         '*.tsx': depcheck.parser.typescript,
-        '*.vue': depcheck.parser.vue
-      }
+        '*.vue': depcheck.parser.vue,
+        // Add support for configuration files
+        '*.config.js': depcheck.parser.es6,
+        '*.config.ts': depcheck.parser.typescript
+      },
+      specials: [
+        depcheck.special.eslint,
+        depcheck.special.jest,
+        depcheck.special.prettier,
+        depcheck.special.babel,
+        // Add support for Vite and Webpack configs
+        depcheck.special.webpack,
+        (file) => {
+          // Custom special to parse Vite config files
+          if (file.match(/vite\.config\.[jt]s$/)) {
+            return depcheck.parser.es6(file);
+          }
+          return [];
+        }
+      ]
     };
     this.cwd = process.cwd();
     this.packageJsonPath = path.join(this.cwd, 'package.json');
@@ -32,20 +50,26 @@ class DependencyChecker {
       'typescript', 'node', '@types/node', // Core language support
       'webpack', 'vite', 'rollup', 'parcel', // Build tools
       'jest', 'mocha', 'vitest', 'cypress', // Test frameworks
-      'eslint', 'prettier', 'husky', 'lint-staged' // Code quality tools
+      'eslint', 'prettier', 'husky', 'lint-staged', // Code quality tools
+      '@vitejs/plugin-react', '@vitejs/plugin-react-refresh', // Vite plugins
+      'gsap', '@gsap/react' // Animation libraries
     ]);
   }
 
   async getPackageInfo() {
     try {
       const packageData = JSON.parse(await fs.readFile(this.packageJsonPath, 'utf8'));
+      // Load user-defined protected packages from package.json
+      const userProtected = packageData.dependencyChecker?.protectedPackages || [];
+      userProtected.forEach(pkg => this.protectedPackages.add(pkg));
       return {
         name: packageData.name || 'unknown',
         version: packageData.version || '0.0.0',
         dependencies: Object.keys(packageData.dependencies || {}),
         devDependencies: Object.keys(packageData.devDependencies || {}),
         scripts: Object.keys(packageData.scripts || {}),
-        engines: packageData.engines || {}
+        engines: packageData.engines || {},
+        dependencyChecker: packageData.dependencyChecker || {}
       };
     } catch (error) {
       throw new Error(`Failed to read package.json: ${error.message}`);
@@ -58,9 +82,7 @@ class DependencyChecker {
       
       // Filter out protected packages and add safety checks
       const safeDependencies = (result.dependencies || []).filter(dep => {
-        // Don't remove protected packages
         if (this.protectedPackages.has(dep)) return false;
-        // Don't remove packages that match common patterns
         if (dep.startsWith('@types/') || dep.includes('eslint') || dep.includes('babel')) return false;
         return true;
       });
@@ -71,6 +93,16 @@ class DependencyChecker {
         return true;
       });
       
+      // Warn about potentially dynamic or config-based dependencies
+      const potentiallyDynamic = [...safeDependencies, ...safeDevDependencies].filter(dep => {
+        return dep.includes('plugin') || dep.includes('vite') || dep.includes('webpack') || dep.includes('gsap');
+      });
+      if (potentiallyDynamic.length > 0) {
+        console.log(chalk.yellow('⚠️  Note: The following dependencies might be used dynamically or in config files:'));
+        potentiallyDynamic.forEach(dep => console.log(chalk.gray(`  • ${dep}`)));
+        console.log(chalk.cyan('💡 Consider adding these to "dependencyChecker.protectedPackages" in package.json to prevent removal.'));
+      }
+
       return {
         dependencies: safeDependencies,
         devDependencies: safeDevDependencies,
@@ -92,11 +124,16 @@ class DependencyChecker {
         encoding: 'utf8',
         stdio: ['pipe', 'pipe', 'pipe']
       });
-      return JSON.parse(output);
+      const outdated = JSON.parse(output);
+      // Filter out chalk to avoid reporting it as outdated
+      delete outdated.chalk;
+      return outdated;
     } catch (error) {
       if (error.stdout) {
         try {
-          return JSON.parse(error.stdout);
+          const outdated = JSON.parse(error.stdout);
+          delete outdated.chalk;
+          return outdated;
         } catch {
           return {};
         }
@@ -386,7 +423,7 @@ const checker = new DependencyChecker();
 program
   .name('dependency-cli')
   .description('Advanced dependency management and optimization tool')
-  .version('1.0.0');
+  .version('1.0.1');
 
 program
   .command('summary')
