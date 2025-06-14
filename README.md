@@ -149,7 +149,7 @@ Feel free to open an issue or submit a PR on the [GitHub repository](https://git
 
 ## 📄 License
 
-Licensed under the [ISC License](./LICENSE).
+Licensed under the [MIT License] 
 
 ---
 
